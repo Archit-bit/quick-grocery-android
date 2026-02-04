@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const dotenv = require('dotenv');
 const productRoutes = require('./routes/productRoutes');
 const authRoutes = require('./routes/authRoutes');
@@ -11,13 +12,18 @@ dotenv.config(); // Load environment variables from .env file
 
 const app = express();
 const port = process.env.PORT || 3000;
+const ownerDir = path.join(__dirname, '../public/owner');
 
 app.use(express.json()); // Enable JSON body parsing
 app.use(express.static('public'));
+app.use('/owner', express.static(ownerDir, { index: 'index.html' }));
 
 // Basic route
 app.get('/', (req, res) => {
     res.send('Quick Grocery Backend is running!');
+});
+app.get(['/owner', '/owner/'], (req, res) => {
+    res.sendFile(path.join(ownerDir, 'index.html'));
 });
 
 // Auth routes
