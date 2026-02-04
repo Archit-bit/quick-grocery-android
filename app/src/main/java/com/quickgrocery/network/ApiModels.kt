@@ -36,6 +36,47 @@ data class ApiOrder(
     @Json(name = "shipping_address") val shippingAddress: String?
 )
 
+data class ApiAdminOrder(
+    val id: Int,
+    @Json(name = "order_date") val orderDate: String?,
+    @Json(name = "total_amount") val totalAmount: String?,
+    val status: String?,
+    @Json(name = "shipping_address") val shippingAddress: String?,
+    @Json(name = "user_id") val userId: Int?,
+    val email: String?,
+    val username: String?,
+    @Json(name = "item_count") val itemCount: Int?,
+    @Json(name = "total_quantity") val totalQuantity: Int?
+)
+
+data class ApiOrderItem(
+    @Json(name = "product_id") val productId: Int,
+    val name: String,
+    val quantity: Int,
+    val price: String
+)
+
+data class ApiAdminOrderDetail(
+    val id: Int,
+    @Json(name = "order_date") val orderDate: String?,
+    @Json(name = "total_amount") val totalAmount: String?,
+    val status: String?,
+    @Json(name = "shipping_address") val shippingAddress: String?,
+    @Json(name = "user_id") val userId: Int?,
+    val email: String?,
+    val username: String?,
+    val items: List<ApiOrderItem>
+)
+
+data class ApiInventoryItem(
+    val id: Int,
+    val name: String,
+    val description: String?,
+    val price: String,
+    @Json(name = "stock_quantity") val stockQuantity: Int?,
+    @Json(name = "category_name") val categoryName: String?
+)
+
 data class AuthRequest(
     val email: String,
     val password: String
@@ -66,4 +107,9 @@ data class UpdateCartRequest(
 
 data class PlaceOrderRequest(
     @Json(name = "shippingAddress") val shippingAddress: String
+)
+
+data class UpdateInventoryRequest(
+    @Json(name = "stockQuantity") val stockQuantity: Int? = null,
+    val price: String? = null
 )

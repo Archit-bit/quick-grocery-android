@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Quick Grocery Owner Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Quick Grocery</div>
+    <div class="top-actions">
+      <button id="refreshBtn" class="btn ghost">Refresh</button>
+      <button id="logoutBtn" class="btn">Logout</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="loginSection" class="card login-card">
+      <h1>Owner Login</h1>
+      <p class="muted">Sign in with your owner account to manage orders and inventory.</p>
+      <label class="field">
+        <span>Email</span>
+        <input id="emailInput" type="email" placeholder="owner@example.com" />
+      </label>
+      <label class="field">
+        <span>Password</span>
+        <input id="passwordInput" type="password" placeholder="••••••••" />
+      </label>
+      <button id="loginBtn" class="btn primary">Sign in</button>
+      <p id="loginError" class="error hidden"></p>
+    </section>
+
+    <section id="dashboard" class="hidden">
+      <div class="grid">
+        <section class="card">
+          <div class="section-header">
+            <h2>Orders</h2>
+            <div class="muted" id="ordersMeta">Loading...</div>
+          </div>
+          <div id="ordersList" class="stack"></div>
+        </section>
+
+        <section class="card">
+          <div class="section-header">
+            <h2>Inventory</h2>
+            <div class="muted" id="inventoryMeta">Loading...</div>
+          </div>
+          <div id="inventoryList" class="stack"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

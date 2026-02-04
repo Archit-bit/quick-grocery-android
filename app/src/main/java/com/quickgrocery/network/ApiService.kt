@@ -41,6 +41,21 @@ interface ApiService {
     @GET("api/orders/{orderId}")
     suspend fun getOrder(@Path("orderId") orderId: Int): ApiOrder
 
+    @GET("api/admin/orders")
+    suspend fun getAdminOrders(): List<ApiAdminOrder>
+
+    @GET("api/admin/orders/{orderId}")
+    suspend fun getAdminOrder(@Path("orderId") orderId: Int): ApiAdminOrderDetail
+
+    @GET("api/admin/inventory")
+    suspend fun getAdminInventory(): List<ApiInventoryItem>
+
+    @PUT("api/admin/inventory/{productId}")
+    suspend fun updateInventory(
+        @Path("productId") productId: Int,
+        @Body body: UpdateInventoryRequest
+    ): ApiInventoryItem
+
     @POST("api/auth/login")
     suspend fun login(@Body body: AuthRequest): AuthResponse
 

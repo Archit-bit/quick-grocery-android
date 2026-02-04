@@ -55,7 +55,9 @@ fun QuickGroceryRoot() {
                     )
                 }
                 composable(Screen.Login.route) {
-                    AuthRoute(onBack = { navController.popBackStack() })
+                    AuthRoute(
+                        onBack = { navController.popBackStack() }
+                    )
                 }
             }
         }
