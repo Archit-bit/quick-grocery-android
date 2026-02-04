@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.quickgrocery.ui.auth.AuthRoute
 import com.quickgrocery.ui.cart.CartRoute
 import com.quickgrocery.ui.detail.ProductDetailRoute
 import com.quickgrocery.ui.home.HomeRoute
@@ -29,6 +30,9 @@ fun QuickGroceryRoot() {
                         },
                         onCartClick = {
                             navController.navigate(Screen.Cart.route)
+                        },
+                        onLoginClick = {
+                            navController.navigate(Screen.Login.route)
                         }
                     )
                 }
@@ -50,6 +54,9 @@ fun QuickGroceryRoot() {
                         onBack = { navController.popBackStack() }
                     )
                 }
+                composable(Screen.Login.route) {
+                    AuthRoute(onBack = { navController.popBackStack() })
+                }
             }
         }
     }
@@ -58,6 +65,7 @@ fun QuickGroceryRoot() {
 sealed class Screen(val route: String) {
     object Home : Screen("home")
     object Cart : Screen("cart")
+    object Login : Screen("login")
     object Detail : Screen("detail/{productId}") {
         const val ARG_PRODUCT_ID = "productId"
         fun createRoute(productId: String) = "detail/$productId"

@@ -1,7 +1,7 @@
 package com.quickgrocery.di
 
 import com.quickgrocery.data.GroceryRepository
-import com.quickgrocery.data.InMemoryGroceryRepository
+import com.quickgrocery.network.NetworkGroceryRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,5 +13,5 @@ import javax.inject.Singleton
 object AppModule {
     @Provides
     @Singleton
-    fun provideGroceryRepository(): GroceryRepository = InMemoryGroceryRepository()
+    fun provideGroceryRepository(repository: NetworkGroceryRepository): GroceryRepository = repository
 }

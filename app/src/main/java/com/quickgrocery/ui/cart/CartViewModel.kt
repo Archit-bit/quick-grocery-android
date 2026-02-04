@@ -43,8 +43,10 @@ class CartViewModel @Inject constructor(
     fun placeOrder() {
         viewModelScope.launch {
             if (uiState.value.items.isNotEmpty()) {
-                repository.clearCart()
-                showOrderSuccess.value = true
+                val success = repository.placeOrder(
+                    shippingAddress = "221B Baker Street, Sector 21"
+                )
+                showOrderSuccess.value = success
             }
         }
     }

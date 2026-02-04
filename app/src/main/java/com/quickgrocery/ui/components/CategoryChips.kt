@@ -3,6 +3,7 @@ package com.quickgrocery.ui.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -34,14 +35,19 @@ fun CategoryChips(
 ) {
     LazyRow(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(AppSpacing.sm),
-        contentPadding = PaddingValues(horizontal = AppSpacing.lg)
+        horizontalArrangement = Arrangement.spacedBy(AppSpacing.xs),
+        contentPadding = PaddingValues(horizontal = AppSpacing.md)
     ) {
         items(categories) { category ->
             FilterChip(
                 selected = category == selectedCategory,
                 onClick = { onCategorySelected(category) },
-                label = { Text(text = category) },
+                label = {
+                    Text(
+                        text = category,
+                        style = MaterialTheme.typography.labelSmall
+                    )
+                },
                 leadingIcon = {
                     Icon(
                         imageVector = categoryIcon(category),
@@ -50,6 +56,7 @@ fun CategoryChips(
                 },
                 shape = AppShapes.small,
                 border = null,
+                modifier = Modifier.height(30.dp),
                 colors = androidx.compose.material3.FilterChipDefaults.filterChipColors(
                     selectedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
                     selectedLabelColor = MaterialTheme.colorScheme.onSurface,

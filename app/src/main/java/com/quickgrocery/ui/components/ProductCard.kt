@@ -6,10 +6,12 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,11 +22,14 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import com.quickgrocery.data.Product
 import com.quickgrocery.ui.theme.AppShapes
 import com.quickgrocery.ui.theme.AppSpacing
+import com.quickgrocery.ui.theme.GreenPrimary
 import com.quickgrocery.ui.theme.QuickGroceryTheme
 
 @Composable
@@ -43,28 +49,26 @@ fun ProductCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val haptic = LocalHapticFeedback.current
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .clickable { onClick() },
+            .clickable { onClick() }
+            .border(1.dp, Color.Black.copy(alpha = 0.06f), AppShapes.medium),
         shape = AppShapes.medium,
+        colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
         Column(
-            modifier = Modifier.padding(AppSpacing.md),
-            verticalArrangement = Arrangement.spacedBy(AppSpacing.sm)
+            modifier = Modifier.padding(AppSpacing.sm),
+            verticalArrangement = Arrangement.spacedBy(AppSpacing.xs)
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(1.2f)
+                    .aspectRatio(1.1f)
                     .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                MaterialTheme.colorScheme.primary.copy(alpha = 0.18f),
-                                MaterialTheme.colorScheme.secondary.copy(alpha = 0.12f)
-                            )
-                        ),
+                        color = Color(0xFFF1F3F6),
                         shape = AppShapes.small
                     )
             )
@@ -77,7 +81,7 @@ fun ProductCard(
             )
             Text(
                 text = product.unit,
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
             )
             Row(
@@ -99,18 +103,32 @@ fun ProductCard(
                     if (inCart) {
                         QuantityStepper(
                             quantity = quantity,
-                            onDecrease = onDecrease,
-                            onIncrease = onIncrease,
-                            compact = true
+                            onDecrease = {
+                                haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                                onDecrease()
+                            },
+                            onIncrease = {
+                                haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                                onIncrease()
+                            },
+                            compact = true,
+                            filled = true
                         )
                     } else {
-                        Button(
-                            onClick = onIncrease,
+                        OutlinedButton(
+                            onClick = {
+                                haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                                onIncrease()
+                            },
                             shape = AppShapes.small,
-                            contentPadding = ButtonDefaults.ContentPadding,
-                            modifier = Modifier.height(32.dp)
+                            border = ButtonDefaults.outlinedButtonBorder.copy(
+                                width = 1.dp,
+                                brush = androidx.compose.ui.graphics.SolidColor(GreenPrimary)
+                            ),
+                            contentPadding = PaddingValues(horizontal = 10.dp, vertical = 0.dp),
+                            modifier = Modifier.height(28.dp)
                         ) {
-                            Text(text = "Add")
+                            Text(text = "ADD", color = GreenPrimary)
                         }
                     }
                 }
@@ -123,7 +141,7 @@ fun ProductCard(
 @Composable
 fun ProductCardPreview() {
     QuickGroceryTheme {
-        Surface(modifier = Modifier.padding(AppSpacing.lg)) {
+        Surface(modifier = Modifier.padding(AppSpacing.md)) {
             ProductCard(
                 product = Product(
                     id = "p1",

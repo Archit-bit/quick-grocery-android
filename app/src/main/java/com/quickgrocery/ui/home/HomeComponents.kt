@@ -53,14 +53,14 @@ fun HomeTopBar(
         Column(
             modifier = Modifier
                 .statusBarsPadding()
-                .padding(horizontal = AppSpacing.lg, vertical = AppSpacing.md)
+                .padding(horizontal = AppSpacing.md, vertical = AppSpacing.sm)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Column(verticalArrangement = Arrangement.spacedBy(AppSpacing.xs)) {
+                Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     DeliveryPill(text = "Delivery in 10-15 min")
                     LocationRow(location = "Deliver to: Home - Sector 21")
                 }
@@ -72,7 +72,7 @@ fun HomeTopBar(
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(AppSpacing.md))
+            Spacer(modifier = Modifier.height(AppSpacing.sm))
             SearchBarField(
                 value = searchQuery,
                 onValueChange = onSearchQueryChange
@@ -90,9 +90,10 @@ private fun DeliveryPill(text: String) {
     ) {
         Text(
             text = text,
-            modifier = Modifier.padding(horizontal = AppSpacing.sm, vertical = AppSpacing.xs),
+            modifier = Modifier.padding(horizontal = AppSpacing.sm, vertical = 2.dp),
             color = Color.White,
-            style = MaterialTheme.typography.labelMedium
+            style = MaterialTheme.typography.labelSmall,
+            fontWeight = FontWeight.Bold
         )
     }
 }
@@ -104,13 +105,13 @@ private fun LocationRow(location: String) {
             imageVector = Icons.Default.Place,
             contentDescription = null,
             tint = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.size(16.dp)
+            modifier = Modifier.size(14.dp)
         )
-        Spacer(modifier = Modifier.size(AppSpacing.xs))
+        Spacer(modifier = Modifier.size(2.dp))
         Text(
             text = location,
-            style = MaterialTheme.typography.labelLarge,
-            fontWeight = FontWeight.Medium
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.SemiBold
         )
         Icon(
             imageVector = Icons.Default.KeyboardArrowDown,
@@ -127,8 +128,8 @@ fun PromoCarousel(
 ) {
     LazyRow(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(AppSpacing.md),
-        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = AppSpacing.lg)
+        horizontalArrangement = Arrangement.spacedBy(AppSpacing.sm),
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = AppSpacing.md)
     ) {
         items(banners) { banner ->
             PromoBannerCard(banner = banner)
@@ -139,11 +140,11 @@ fun PromoCarousel(
 @Composable
 private fun PromoBannerCard(banner: PromoBanner) {
     Surface(
-        shape = AppShapes.medium,
+        shape = AppShapes.small,
         tonalElevation = 1.dp,
         modifier = Modifier
-            .height(120.dp)
-            .width(260.dp)
+            .height(90.dp)
+            .width(240.dp)
             .padding(vertical = AppSpacing.xs)
     ) {
         Column(
@@ -153,7 +154,7 @@ private fun PromoBannerCard(banner: PromoBanner) {
                         colors = listOf(banner.colorStart, banner.colorEnd)
                     )
                 )
-                .padding(AppSpacing.lg)
+                .padding(AppSpacing.md)
                 .fillMaxWidth(),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
@@ -164,12 +165,12 @@ private fun PromoBannerCard(banner: PromoBanner) {
             )
             Text(
                 text = banner.subtitle,
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.labelSmall,
                 color = Color.White
             )
             Text(
                 text = banner.cta,
-                style = MaterialTheme.typography.labelLarge,
+                style = MaterialTheme.typography.labelMedium,
                 color = Color.White
             )
         }
@@ -184,23 +185,23 @@ fun BottomCartBar(
     modifier: Modifier = Modifier
 ) {
     Surface(
-        shape = AppShapes.large,
+        shape = AppShapes.small,
         color = MaterialTheme.colorScheme.primary,
-        shadowElevation = 8.dp,
+        shadowElevation = 4.dp,
         modifier = modifier
-            .padding(horizontal = AppSpacing.lg, vertical = AppSpacing.md)
+            .padding(horizontal = AppSpacing.md, vertical = AppSpacing.sm)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = AppSpacing.lg, vertical = AppSpacing.md),
+                .padding(horizontal = AppSpacing.md, vertical = AppSpacing.sm),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column {
                 Text(
                     text = "$itemCount items",
-                    style = MaterialTheme.typography.labelLarge,
+                    style = MaterialTheme.typography.labelMedium,
                     color = Color.White
                 )
                 Text(
@@ -217,7 +218,7 @@ fun BottomCartBar(
                 Text(
                     text = "View Cart",
                     color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.labelLarge
+                    style = MaterialTheme.typography.labelMedium
                 )
             }
         }

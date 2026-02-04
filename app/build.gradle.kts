@@ -23,6 +23,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     composeOptions {
@@ -73,10 +74,24 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.50")
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
 
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.11.0")
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.1")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
 }
 
 kapt {
     correctErrorTypes = true
+}
+
+val baseUrl = (project.findProperty("API_BASE_URL") as String?) ?: "http://10.0.2.2:3000/"
+val apiToken = (project.findProperty("API_TOKEN") as String?) ?: ""
+
+android.buildTypes.configureEach {
+    buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
+    buildConfigField("String", "API_TOKEN", "\"$apiToken\"")
 }

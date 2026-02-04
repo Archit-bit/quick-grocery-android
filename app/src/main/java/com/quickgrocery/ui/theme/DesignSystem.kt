@@ -8,14 +8,14 @@ object AppSpacing {
     val xs = 4.dp
     val sm = 8.dp
     val md = 12.dp
-    val lg = 16.dp
-    val xl = 20.dp
+    val lg = 12.dp
+    val xl = 12.dp
 }
 
 object AppShapes {
-    val small = RoundedCornerShape(12.dp)
-    val medium = RoundedCornerShape(16.dp)
-    val large = RoundedCornerShape(20.dp)
+    val small = RoundedCornerShape(8.dp)
+    val medium = RoundedCornerShape(12.dp)
+    val large = RoundedCornerShape(16.dp)
 }
 
 val QuickGroceryShapes = Shapes(

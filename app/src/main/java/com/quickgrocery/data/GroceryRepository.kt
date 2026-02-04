@@ -12,4 +12,5 @@ interface GroceryRepository {
     suspend fun updateQuantity(productId: String, quantity: Int)
     suspend fun removeFromCart(productId: String)
     suspend fun clearCart()
+    suspend fun placeOrder(shippingAddress: String): Boolean
 }

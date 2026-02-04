@@ -62,4 +62,10 @@ class InMemoryGroceryRepository @Inject constructor() : GroceryRepository {
     override suspend fun clearCart() {
         cartFlow.value = emptyList()
     }
+
+    override suspend fun placeOrder(shippingAddress: String): Boolean {
+        if (cartFlow.value.isEmpty()) return false
+        clearCart()
+        return true
+    }
 }
