@@ -40,7 +40,8 @@ fun CartRoute(
         onIncrease = viewModel::increase,
         onDecrease = viewModel::decrease,
         onPlaceOrder = viewModel::placeOrder,
-        onDismissSuccess = viewModel::dismissOrderSuccess
+        onDismissSuccess = viewModel::dismissOrderSuccess,
+        onDismissError = viewModel::dismissOrderError
     )
 }
 
@@ -52,7 +53,8 @@ fun CartScreen(
     onIncrease: (CartItem) -> Unit,
     onDecrease: (CartItem) -> Unit,
     onPlaceOrder: () -> Unit,
-    onDismissSuccess: () -> Unit
+    onDismissSuccess: () -> Unit,
+    onDismissError: () -> Unit
 ) {
     val recommendations = remember { sampleProducts().shuffled().take(6) }
     val bottomPadding = if (state.items.isNotEmpty()) 140.dp else 24.dp
@@ -65,7 +67,11 @@ fun CartScreen(
             if (state.items.isNotEmpty()) {
                 Column {
                     AddressStrip(onChange = {})
-                    PrimaryGreenCTA(text = "Place order", onClick = onPlaceOrder)
+                    PrimaryGreenCTA(
+                        text = if (state.isLoading) "Placing order..." else "Place order",
+                        onClick = onPlaceOrder,
+                        enabled = !state.isLoading
+                    )
                 }
             }
         },
@@ -123,6 +129,19 @@ fun CartScreen(
                 }
             )
         }
+
+        if (state.showOrderError) {
+            AlertDialog(
+                onDismissRequest = onDismissError,
+                title = { Text(text = "Order failed") },
+                text = { Text(text = "Unable to place order. Please check your connection and try again.") },
+                confirmButton = {
+                    TextButton(onClick = onDismissError) {
+                        Text(text = "OK")
+                    }
+                }
+            )
+        }
     }
 }
 
@@ -151,7 +170,8 @@ fun CartScreenPreview() {
             onIncrease = {},
             onDecrease = {},
             onPlaceOrder = {},
-            onDismissSuccess = {}
+            onDismissSuccess = {},
+            onDismissError = {}
         )
     }
 }

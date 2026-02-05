@@ -100,15 +100,20 @@ class NetworkGroceryRepository @Inject constructor(
 
     override suspend fun placeOrder(shippingAddress: String): Boolean {
         val token = authStore.token.value
+        android.util.Log.d("NetworkGroceryRepo", "placeOrder called, token present: ${!token.isNullOrBlank()}")
         if (token.isNullOrBlank()) {
+            android.util.Log.w("NetworkGroceryRepo", "No token, clearing cart locally")
             clearCart()
             return true
         }
         return runCatching {
+            android.util.Log.d("NetworkGroceryRepo", "Calling API placeOrder with address: $shippingAddress")
             api.placeOrder(PlaceOrderRequest(shippingAddress))
+            android.util.Log.d("NetworkGroceryRepo", "Order placed successfully!")
             refreshCart()
             true
-        }.getOrElse {
+        }.getOrElse { error ->
+            android.util.Log.e("NetworkGroceryRepo", "Order failed: ${error.message}", error)
             false
         }
     }

@@ -1,5 +1,6 @@
 package com.quickgrocery.ui.cart
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.quickgrocery.data.CartItem
@@ -19,13 +20,23 @@ class CartViewModel @Inject constructor(
     private val repository: GroceryRepository
 ) : ViewModel() {
     private val showOrderSuccess = MutableStateFlow(false)
+    private val showOrderError = MutableStateFlow(false)
+    private val isLoading = MutableStateFlow(false)
 
     val uiState: StateFlow<CartUiState> = combine(
         repository.cart,
-        showOrderSuccess
-    ) { items, showSuccess ->
+        showOrderSuccess,
+        showOrderError,
+        isLoading
+    ) { items, showSuccess, showError, loading ->
         val total = items.sumOf { it.product.price * it.quantity }
-        CartUiState(items = items, total = total, showOrderSuccess = showSuccess)
+        CartUiState(
+            items = items,
+            total = total,
+            showOrderSuccess = showSuccess,
+            showOrderError = showError,
+            isLoading = loading
+        )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), CartUiState())
 
     fun increase(item: CartItem) {
@@ -42,11 +53,19 @@ class CartViewModel @Inject constructor(
 
     fun placeOrder() {
         viewModelScope.launch {
-            if (uiState.value.items.isNotEmpty()) {
+            if (uiState.value.items.isNotEmpty() && !isLoading.value) {
+                Log.d("CartViewModel", "Placing order...")
+                isLoading.value = true
                 val success = repository.placeOrder(
                     shippingAddress = "221B Baker Street, Sector 21"
                 )
-                showOrderSuccess.value = success
+                isLoading.value = false
+                Log.d("CartViewModel", "Order result: $success")
+                if (success) {
+                    showOrderSuccess.value = true
+                } else {
+                    showOrderError.value = true
+                }
             }
         }
     }
@@ -54,10 +73,16 @@ class CartViewModel @Inject constructor(
     fun dismissOrderSuccess() {
         showOrderSuccess.update { false }
     }
+
+    fun dismissOrderError() {
+        showOrderError.update { false }
+    }
 }
 
 data class CartUiState(
     val items: List<CartItem> = emptyList(),
     val total: Double = 0.0,
-    val showOrderSuccess: Boolean = false
+    val showOrderSuccess: Boolean = false,
+    val showOrderError: Boolean = false,
+    val isLoading: Boolean = false
 )

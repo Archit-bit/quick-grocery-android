@@ -346,15 +346,20 @@ fun AddressStrip(
 fun PrimaryGreenCTA(
     text: String,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     onClick: () -> Unit
 ) {
     Button(
         onClick = onClick,
+        enabled = enabled,
         modifier = modifier
             .fillMaxWidth()
             .height(56.dp),
         shape = RoundedCornerShape(28.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = GreenPrimary)
+        colors = ButtonDefaults.buttonColors(
+            containerColor = GreenPrimary,
+            disabledContainerColor = GreenPrimary.copy(alpha = 0.5f)
+        )
     ) {
         Text(
             text = text,
